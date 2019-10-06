@@ -1,0 +1,3 @@
+[submodule "src/PlumPack.Infrastructure"]
+	path = src/PlumPack.Infrastructure
+	url = https://github.com/plumpack/infrastructure.git
