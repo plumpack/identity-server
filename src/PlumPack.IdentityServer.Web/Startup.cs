@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using PlumPack.Infrastructure.Migrations;
 
 namespace PlumPack.IdentityServer.Web
 {
@@ -23,7 +24,7 @@ namespace PlumPack.IdentityServer.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            Infrastructure.ServiceContext.AddServicesFromAssembly(typeof(User).Assembly, services);
+            Registrar.Register(services, Configuration);
             
             services.AddIdentity<User, Role>()
                 .AddDefaultTokenProviders();
@@ -50,8 +51,13 @@ namespace PlumPack.IdentityServer.Web
             {
                 throw new Exception("need to configure key material");
             }
-
+            
             services.AddAuthentication();
+
+            using (var tempProvider = services.BuildServiceProvider())
+            {
+                tempProvider.GetRequiredService<IMigrator>().Migrate();
+            }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -70,8 +76,9 @@ namespace PlumPack.IdentityServer.Web
 
             app.UseStaticFiles();
             
-            app.UseIdentityServer();
             app.UseRouting();
+            app.UseIdentityServer();
+            app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

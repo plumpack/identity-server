@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 
 namespace PlumPack.IdentityServer.Web.Controllers
 {
-    [AllowAnonymous]
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

@@ -14,11 +14,6 @@ namespace PlumPack.IdentityServer.Web
     {
         public static void Main(string[] args)
         {
-            foreach (DictionaryEntry env in System.Environment.GetEnvironmentVariables())
-            {
-                
-                Console.WriteLine($"{env.Key}:{env.Value}");
-            }
             CreateHostBuilder(args).Build().Run();
         }
 
