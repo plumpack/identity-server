@@ -5,7 +5,7 @@ using PlumPack.Infrastructure;
 
 namespace PlumPack.IdentityServer.Identity
 {
-    [Service(typeof(IUserClaimsPrincipalFactory<User>))]
+    //[Service(typeof(IUserClaimsPrincipalFactory<User>))]
     public class UserClaimsPrincipalFactory : IUserClaimsPrincipalFactory<User>
     {
         public Task<ClaimsPrincipal> CreateAsync(User user)

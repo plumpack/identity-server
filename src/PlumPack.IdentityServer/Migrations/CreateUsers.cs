@@ -11,10 +11,15 @@ namespace PlumPack.IdentityServer.Migrations
         public void Run(IDbConnection connection)
         {
             connection.ExecuteSql(@"
-CREATE TABLE ""user"" 
+CREATE TABLE ""users"" 
 (
     ""id"" TEXT PRIMARY KEY, 
-    ""username"" TEXT NULL 
+    ""user_name"" TEXT NOT NULL,
+    ""user_name_normalized"" TEXT NOT NULL,
+    ""email"" TEXT NOT NULL,
+    ""email_normalized"" TEXT NOT NULL,
+    ""email_confirmed"" BOOLEAN NOT NULL,
+    ""password_hash"" TEXT NULL 
 ); 
 ");
         }

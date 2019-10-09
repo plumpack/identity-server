@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using IdentityServer4.Extensions
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -12,9 +13,12 @@
                 <li>
                     <a asp-controller="Home" asp-action="Index">Home</a>
                 </li>
-                <li>
-                    <a asp-controller="Home" asp-action="Privacy">Privacy</a>
-                </li>
+                @if (User.IsAuthenticated())
+                {
+                    <li>
+                        Hello @User.Identity.Name, <a asp-controller="Account" asp-action="Logout">Logout</a>
+                    </li>
+                }
             </ul>
         </nav>
     </header>
