@@ -6,6 +6,7 @@
 
 
   <ItemGroup>
+    <PackageReference Include="CommandLineParser" Version="2.6.0" />
     <PackageReference Include="IdentityServer4" Version="3.0.1" />
     <PackageReference Include="IdentityServer4.AspNetIdentity" Version="3.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.0.0" />
