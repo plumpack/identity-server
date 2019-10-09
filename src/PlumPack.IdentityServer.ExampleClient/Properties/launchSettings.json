@@ -3,7 +3,7 @@
     "PlumPack.IdentityServer": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "https://localhost:5003",
+      "launchUrl": "http://localhost:5002",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

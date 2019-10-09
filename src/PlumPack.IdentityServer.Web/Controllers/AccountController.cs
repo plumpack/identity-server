@@ -67,28 +67,16 @@ namespace PlumPack.IdentityServer.Web.Controllers
             {
                 if (context != null)
                 {
-                    // TODO:
-                    /*
                     // if the user cancels, send a result back into IdentityServer as if they 
                     // denied the consent (even if this client does not require consent).
                     // this will send back an access denied OIDC error response to the client.
                     await _interaction.GrantConsentAsync(context, ConsentResponse.Denied);
 
-                    // we can trust model.ReturnUrl since GetAuthorizationContextAsync returned non-null
-                    if (await _clientStore.IsPkceClientAsync(context.ClientId))
-                    {
-                        // if the client is PKCE then we assume it's native, so this change in how to
-                        // return the response is for better UX for the end user.
-                        return View("Redirect", new RedirectViewModel { RedirectUrl = model.ReturnUrl });
-                    }*/
-
                     return Redirect(model.ReturnUrl);
                 }
-                else
-                {
-                    // since we don't have a valid context, then we just go back to the home page
-                    return Redirect("~/");
-                }
+
+                // since we don't have a valid context, then we just go back to the home page
+                return Redirect("~/");
             }
 
             if (ModelState.IsValid)
@@ -101,15 +89,6 @@ namespace PlumPack.IdentityServer.Web.Controllers
 
                     if (context != null)
                     {
-                        // TODO:
-                        /*if (await _clientStore.IsPkceClientAsync(context.ClientId))
-                        {
-                            // if the client is PKCE then we assume it's native, so this change in how to
-                            // return the response is for better UX for the end user.
-                            return View("Redirect", new RedirectViewModel { RedirectUrl = model.ReturnUrl });
-                        }*/
-
-                        // we can trust model.ReturnUrl since GetAuthorizationContextAsync returned non-null
                         return Redirect(model.ReturnUrl);
                     }
 
@@ -134,6 +113,15 @@ namespace PlumPack.IdentityServer.Web.Controllers
 
             // something went wrong, show form with error
             return View(model);
+        }
+        
+        [HttpGet]
+        public async Task<IActionResult> Logout()
+        {
+            // delete local authentication cookie
+            await _signInManager.SignOutAsync();
+
+            return Redirect("/");
         }
 
         [HttpGet]

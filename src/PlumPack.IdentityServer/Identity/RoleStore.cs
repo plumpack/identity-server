@@ -60,7 +60,6 @@ namespace PlumPack.IdentityServer.Identity
         
         public void Dispose()
         {
-            throw new System.NotImplementedException();
         }
     }
 }
