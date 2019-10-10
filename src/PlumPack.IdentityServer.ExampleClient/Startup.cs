@@ -46,8 +46,8 @@ namespace PlumPack.IdentityServer.ExampleClient
                     options.SaveTokens = true;
                     options.GetClaimsFromUserInfoEndpoint = true;
 
-                    options.Scope.Add("api1");
                     options.Scope.Add("offline_access");
+                    options.Scope.Add("email");
 
                     options.ClaimActions.MapJsonKey("website", "website");
                 });

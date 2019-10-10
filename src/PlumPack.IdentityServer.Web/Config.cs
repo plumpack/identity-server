@@ -31,7 +31,7 @@ namespace PlumPack.IdentityServer.Web
                 // OpenID Connect hybrid flow client (MVC)
                 new Client
                 {
-                    ClientId = "mvc",
+                    ClientId = "example-client",
                     ClientName = "MVC Client",
                     AllowedGrantTypes = GrantTypes.Hybrid,
 
@@ -49,7 +49,7 @@ namespace PlumPack.IdentityServer.Web
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
-                        "api1"
+                        IdentityServerConstants.StandardScopes.Email
                     },
 
                     AllowOfflineAccess = true
