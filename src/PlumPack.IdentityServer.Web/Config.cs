@@ -12,6 +12,7 @@ namespace PlumPack.IdentityServer.Web
             {
                 new IdentityResources.OpenId(),
                 new IdentityResources.Profile(),
+                new IdentityResources.Email()
             };
         }
 
