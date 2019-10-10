@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -25,6 +27,9 @@ namespace PlumPack.IdentityServer.Web
         public void ConfigureServices(IServiceCollection services)
         {
             Registrar.Register(services, Configuration);
+
+            var clientApplications = new List<ClientApplication>();
+            Configuration.GetSection("ClientApplications").Bind(clientApplications);
             
             services.AddIdentity<User, Role>()
                 .AddDefaultTokenProviders();
@@ -40,7 +45,7 @@ namespace PlumPack.IdentityServer.Web
             })
                 .AddInMemoryIdentityResources(Config.GetIdentityResources())
                 .AddInMemoryApiResources(Config.GetApis())
-                .AddInMemoryClients(Config.GetClients())
+                .AddInMemoryClients(clientApplications.Select(x => x.BuildIdentityServerClient()))
                 .AddAspNetIdentity<User>();
 
             if (WebHostEnvironment.IsDevelopment())
@@ -53,11 +58,6 @@ namespace PlumPack.IdentityServer.Web
             }
             
             services.AddAuthentication();
-
-            using (var tempProvider = services.BuildServiceProvider())
-            {
-                tempProvider.GetRequiredService<IMigrator>().Migrate();
-            }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

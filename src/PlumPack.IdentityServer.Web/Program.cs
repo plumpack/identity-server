@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 using CommandLine;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using PlumPack.Infrastructure.Migrations;
 
 namespace PlumPack.IdentityServer.Web
 {
@@ -43,7 +45,15 @@ namespace PlumPack.IdentityServer.Web
             Parser.Default.ParseArguments<Options>(args)
                 .WithParsed(o =>
                 {
-                    CreateHostBuilder(o).Build().Run();
+                    var host = CreateHostBuilder(o).Build();
+
+                    using (var scope = host.Services.CreateScope())
+                    {
+                        var migrator = scope.ServiceProvider.GetRequiredService<IMigrator>();
+                        migrator.Migrate();
+                    }
+
+                    host.RunAsync().GetAwaiter().GetResult();
                 });
         }
 
