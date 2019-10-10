@@ -39,7 +39,7 @@ namespace PlumPack.IdentityServer.ExampleClient
                     options.Authority = "http://localhost:5000";
                     options.RequireHttpsMetadata = false;
 
-                    options.ClientId = "mvc";
+                    options.ClientId = "example-client";
                     options.ClientSecret = "secret";
                     options.ResponseType = "code id_token";
 
