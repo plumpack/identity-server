@@ -44,11 +44,14 @@ namespace PlumPack.IdentityServer.Web
                 options.Events.RaiseSuccessEvents = true;
                 options.UserInteraction.ErrorUrl = "/error";
             })
-                .AddInMemoryIdentityResources(Config.GetIdentityResources())
-                .AddInMemoryApiResources(Config.GetApis())
+                .AddInMemoryIdentityResources(new List<IdentityResource>
+                {
+                    new IdentityResources.OpenId(),
+                    new IdentityResources.Profile(),
+                    new IdentityResources.Email()
+                })
                 .AddInMemoryClients(clientApplications.Select(x => x.BuildIdentityServerClient()))
                 .AddAspNetIdentity<User>();
-
             if (WebHostEnvironment.IsDevelopment())
             {
                 builder.AddDeveloperSigningCredential();
