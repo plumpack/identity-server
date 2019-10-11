@@ -48,8 +48,6 @@ namespace PlumPack.IdentityServer.ExampleClient
 
                     options.Scope.Add("offline_access");
                     options.Scope.Add("email");
-
-                    options.ClaimActions.MapJsonKey("website", "website");
                 });
         }
 

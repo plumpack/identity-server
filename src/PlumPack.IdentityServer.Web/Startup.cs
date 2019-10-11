@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using IdentityServer4.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -37,13 +38,14 @@ namespace PlumPack.IdentityServer.Web
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
 
             var builder = services.AddIdentityServer(options =>
-            {
-                options.Events.RaiseErrorEvents = true;
-                options.Events.RaiseInformationEvents = true;
-                options.Events.RaiseFailureEvents = true;
-                options.Events.RaiseSuccessEvents = true;
-                options.UserInteraction.ErrorUrl = "/error";
-            })
+                {
+                    options.Events.RaiseErrorEvents = true;
+                    options.Events.RaiseInformationEvents = true;
+                    options.Events.RaiseFailureEvents = true;
+                    options.Events.RaiseSuccessEvents = true;
+                    options.UserInteraction.ErrorUrl = "/error";
+                    options.UserInteraction.LogoutUrl = "/logout";
+                })
                 .AddInMemoryIdentityResources(new List<IdentityResource>
                 {
                     new IdentityResources.OpenId(),

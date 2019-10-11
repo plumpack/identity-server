@@ -116,15 +116,6 @@ namespace PlumPack.IdentityServer.Web.Controllers
         }
         
         [HttpGet]
-        public async Task<IActionResult> Logout()
-        {
-            // delete local authentication cookie
-            await _signInManager.SignOutAsync();
-
-            return Redirect("/");
-        }
-
-        [HttpGet]
         public IActionResult Register(string returnUrl)
         {
             var model = new RegisterViewModel();

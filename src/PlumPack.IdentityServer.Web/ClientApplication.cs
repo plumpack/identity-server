@@ -15,6 +15,8 @@ namespace PlumPack.IdentityServer.Web
         public List<string> RedirectUris { get; set; }
             
         public List<string> PostLogoutRedirectUris { get; set; }
+        
+        public string BackChannelLogoutUri { get; set; }
 
         public Client BuildIdentityServerClient()
         {
@@ -31,6 +33,7 @@ namespace PlumPack.IdentityServer.Web
 
                 RedirectUris = RedirectUris,
                 PostLogoutRedirectUris = PostLogoutRedirectUris,
+                BackChannelLogoutUri = BackChannelLogoutUri,
 
                 RequireConsent = false,
 
