@@ -50,7 +50,7 @@ namespace PlumPack.IdentityServer.Web.Controllers
             // build a model so the logged out page knows what to display
             var vm = await BuildLoggedOutViewModelAsync(model.LogoutId);
 
-            if (User?.Identity.IsAuthenticated == true)
+            if (User.IsAuthenticated())
             {
                 // delete local authentication cookie
                 await _signInManager.SignOutAsync();
@@ -58,19 +58,7 @@ namespace PlumPack.IdentityServer.Web.Controllers
                 // raise the logout event
                 await _events.RaiseAsync(new UserLogoutSuccessEvent(User.GetSubjectId(), User.GetDisplayName()));
             }
-
-            // check if we need to trigger sign-out at an upstream identity provider
-//            if (vm.TriggerExternalSignout)
-//            {
-//                // build a return URL so the upstream provider will redirect back
-//                // to us after the user has logged out. this allows us to then
-//                // complete our single sign-out processing.
-//                string url = Url.Action("Logout", new { logoutId = vm.LogoutId });
-//
-//                // this triggers a redirect to the external provider for sign-out
-//                return SignOut(new AuthenticationProperties { RedirectUri = url }, vm.ExternalAuthenticationScheme);
-//            }
-
+            
             return View("LoggedOut", vm);
         }
         
@@ -78,7 +66,7 @@ namespace PlumPack.IdentityServer.Web.Controllers
         {
             var vm = new LogoutViewModel { LogoutId = logoutId };
 
-            if (User.IsAuthenticated() == false)
+            if (!User.IsAuthenticated())
             {
                 // if the user is not authenticated, then just show logged out page
                 vm.ShowLogoutPrompt = false;
@@ -106,27 +94,6 @@ namespace PlumPack.IdentityServer.Web.Controllers
                 SignOutIframeUrl = logout?.SignOutIFrameUrl,
                 LogoutId = logoutId
             };
-
-            if (User?.Identity.IsAuthenticated == true)
-            {
-                var idp = User.FindFirst(JwtClaimTypes.IdentityProvider)?.Value;
-                if (idp != null && idp != IdentityServer4.IdentityServerConstants.LocalIdentityProvider)
-                {
-                    var providerSupportsSignout = await HttpContext.GetSchemeSupportsSignOutAsync(idp);
-                    if (providerSupportsSignout)
-                    {
-                        if (vm.LogoutId == null)
-                        {
-                            // if there's no current logout context, we need to create one
-                            // this captures necessary info from the current logged in user
-                            // before we signout and redirect away to the external IdP for signout
-                            vm.LogoutId = await _interaction.CreateLogoutContextAsync();
-                        }
-
-                        //vm.ExternalAuthenticationScheme = idp;
-                    }
-                }
-            }
 
             return vm;
         }

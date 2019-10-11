@@ -2,15 +2,19 @@ using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using IdentityModel.Client;
+using IdentityServer4.Extensions;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualBasic;
 
 namespace PlumPack.IdentityServer.ExampleClient.Controllers
 {
+    [AllowAnonymous]
     public class LogoutController : Controller
     {
+        [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
         public async Task<ActionResult> Index()
         {
             var idToken = await HttpContext.GetTokenAsync("id_token");
@@ -21,31 +25,29 @@ namespace PlumPack.IdentityServer.ExampleClient.Controllers
             if (disco.IsError) throw new Exception(disco.Error);
 
             var endSessionUrl =
-                $"{disco.EndSessionEndpoint}?id_token_hint={idToken}&post_logout_redirect_uri={HttpContext.Request.Scheme}://{HttpContext.Request.Host}/logout/backchannel";
+                $"{disco.EndSessionEndpoint}?id_token_hint={idToken}&post_logout_redirect_uri={HttpContext.Request.Scheme}://{HttpContext.Request.Host}/logout/callback";
 
             return Redirect(endSessionUrl);
         }
         
-        [HttpGet]
-        [AllowAnonymous]
         [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
-        public async Task<IActionResult> BackChannel(string logout_token)
+        public async Task<IActionResult> FrontChannel(string sid)
         {
-            try
+            if (User.IsAuthenticated())
             {
-//                var user = await ValidateLogoutToken(logout_token);
-//
-//                // these are the sub & sid to signout
-//                var sub = user.FindFirst("sub")?.Value;
-//                var sid = user.FindFirst("sid")?.Value;
-//
-//                LogoutSessions.Add(sub, sid);
-
-                return Ok();
+                var currentSid = User.FindFirst("sid")?.Value ?? "";
+                if (string.Equals(currentSid, sid, StringComparison.Ordinal))
+                {
+                    await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+                }
             }
-            catch { }
 
-            return BadRequest();
+            return NoContent();
+        }
+        
+        public async Task<IActionResult> Callback()
+        {
+            return Redirect("/");
         }
     }
 }
