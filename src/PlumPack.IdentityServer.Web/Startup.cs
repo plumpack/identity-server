@@ -80,8 +80,24 @@ namespace PlumPack.IdentityServer.Web
                 // TODO: app.UseHsts();
             }
 
-            app.UseStaticFiles();
-            
+            if (env.IsDevelopment())
+            {
+                app.UseStaticFiles(new StaticFileOptions()
+                {
+                    OnPrepareResponse = (context) =>
+                    {
+                        // Disable caching of all static files.
+                        context.Context.Response.Headers["Cache-Control"] = "no-cache, no-store";
+                        context.Context.Response.Headers["Pragma"] = "no-cache";
+                        context.Context.Response.Headers["Expires"] = "-1";
+                    }
+                });
+            }
+            else
+            {
+                app.UseStaticFiles();
+            }
+
             app.UseRouting();
             app.UseIdentityServer();
             app.UseAuthorization();

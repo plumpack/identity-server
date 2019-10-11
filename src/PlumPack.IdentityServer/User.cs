@@ -5,6 +5,10 @@ namespace PlumPack.IdentityServer
     [Alias("users")]
     public class User
     {
+        public const string DefaultUserName = "admin";
+        public const string DefaultEmail = "admin@admin.com";
+        public const string DefaultPassword = "Admin1234!";
+        
         [Alias("id"), PrimaryKey, Required]
         public string Id { get; set; }
         

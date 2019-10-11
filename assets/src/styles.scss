@@ -1,2 +1,13 @@
 $icon-font-path: "~bootstrap/assets/fonts/bootstrap/";
 @import "~bootstrap-scss/bootstrap";
+
+.validation-summary-errors {
+    ul {
+        margin: 0;
+        padding: 0;
+
+        li {
+            list-style-type: none;
+        }
+    }
+}

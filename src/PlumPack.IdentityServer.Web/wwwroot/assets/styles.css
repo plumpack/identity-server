@@ -7020,3 +7020,9 @@ a.text-dark:hover, a.text-dark:focus {
     color: inherit;
     border-color: #dee2e6; } }
 
+.validation-summary-errors ul {
+  margin: 0;
+  padding: 0; }
+  .validation-summary-errors ul li {
+    list-style-type: none; }
+

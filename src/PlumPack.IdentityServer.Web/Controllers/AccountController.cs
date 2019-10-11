@@ -31,7 +31,8 @@ namespace PlumPack.IdentityServer.Web.Controllers
             UserManager<User> userManager,
             IEventService events,
             IEmailSender emailSender,
-            IUserStore<User> userStore)
+            IUserStore<User> userStore,
+            IUserEmailStore<User> userEmailStore)
         {
             _interaction = interaction;
             _signInManager = signInManager;
@@ -39,11 +40,7 @@ namespace PlumPack.IdentityServer.Web.Controllers
             _events = events;
             _emailSender = emailSender;
             _userStore = userStore;
-            if (!_userManager.SupportsUserEmail)
-            {
-                throw new Exception("User store doesn't support email.");
-            }
-            _userEmailStore = _userStore as IUserEmailStore<User>;
+            _userEmailStore = userEmailStore;
         }
         
         [HttpGet]
@@ -108,7 +105,7 @@ namespace PlumPack.IdentityServer.Web.Controllers
                 }
 
                 await _events.RaiseAsync(new UserLoginFailureEvent(model.Username, "invalid credentials"));
-                ModelState.AddModelError(string.Empty, "Invalid username of password");
+                ModelState.AddModelError(string.Empty, "Invalid username or password");
             }
 
             // something went wrong, show form with error

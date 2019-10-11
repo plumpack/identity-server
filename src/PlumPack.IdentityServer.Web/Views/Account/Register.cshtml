@@ -1,26 +1,29 @@
 @model RegisterViewModel
+@{
+    Layout = "_LayoutAccount";
+}
 
-<form asp-route="Login">
+<h1 class="card-title">Register</h1>
+<partial name="_ValidationSummary"></partial>
+<form asp-route="Register">
     <input type="hidden" asp-for="ReturnUrl" />
-    <fieldset>
-        <div class="form-group">
-            <label asp-for="UserName"></label>
-            <input class="form-control" placeholder="User name" asp-for="UserName" autofocus>
-        </div>
-        <div class="form-group">
-            <label asp-for="Email"></label>
-            <input class="form-control" placeholder="Email" asp-for="Email" autofocus>
-        </div>
-        <div class="form-group">
-            <label asp-for="Password"></label>
-            <input type="password" class="form-control" placeholder="Password" asp-for="Password" autocomplete="off">
-        </div>
-        <div class="form-group">
-            <label asp-for="ConfirmPassword"></label>
-            <input type="password" class="form-control" placeholder="Password" asp-for="ConfirmPassword" autocomplete="off">
-        </div>
-        <div class="form-group">
-            <button class="btn btn-primary">Register</button>
-        </div>
-    </fieldset>
+    <div class="form-group">
+        <label asp-for="UserName"></label>
+        <input class="form-control" placeholder="Username" asp-for="UserName" autofocus>
+    </div>
+    <div class="form-group">
+        <label asp-for="Email"></label>
+        <input class="form-control" placeholder="Username" asp-for="Email">
+    </div>
+    <div class="form-group">
+        <label asp-for="Password"></label>
+        <input type="password" class="form-control" placeholder="Password" asp-for="Password" autocomplete="off">
+    </div>
+    <div class="form-group">
+        <label asp-for="ConfirmPassword"></label>
+        <input type="password" class="form-control" placeholder="ConfirmPassword" asp-for="Password" autocomplete="off">
+    </div>
+    <div class="form-group mb-0">
+        <button class="btn btn-primary">Register</button>
+    </div>
 </form>

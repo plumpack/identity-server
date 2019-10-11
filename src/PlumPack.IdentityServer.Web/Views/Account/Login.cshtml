@@ -1,28 +1,33 @@
 @model LoginViewModel
+@{
+    Layout = "_LayoutAccount";
+}
 
+<h1 class="card-title">Login</h1>
+<p class="card-subtitle text-muted mb-3">Login in to your account to continue...</p>
+<partial name="_ValidationSummary"></partial>
 <form asp-route="Login">
     <input type="hidden" asp-for="ReturnUrl" />
-    <fieldset>
-        <div class="form-group">
-            <label asp-for="Username"></label>
-            <input class="form-control" placeholder="Username" asp-for="Username" autofocus>
-        </div>
-        <div class="form-group">
-            <label asp-for="Password"></label>
-            <input type="password" class="form-control" placeholder="Password" asp-for="Password" autocomplete="off">
-        </div>
-        <div class="form-group login-remember">
-            <label asp-for="RememberLogin">
-                <input asp-for="RememberLogin">
-                <strong>Remember My Login</strong>
-            </label>
-        </div>
-        <div class="form-group">
-            <a asp-controller="Account" asp-action="Register" asp-route-returnUrl="@Model.ReturnUrl">Register</a>
-        </div>
-        <div class="form-group">
-            <button class="btn btn-primary" name="button" value="login">Login</button>
-            <button class="btn btn-default" name="button" value="cancel">Cancel</button>
-        </div>
-    </fieldset>
+    <div class="form-group">
+        <label asp-for="Username"></label>
+        <input class="form-control" placeholder="Username" asp-for="Username" autofocus>
+    </div>
+    <div class="form-group">
+        <label asp-for="Password"></label>
+        <input type="password" class="form-control" placeholder="Password" asp-for="Password" autocomplete="off">
+    </div>
+    <div class="form-group login-remember">
+        <label asp-for="RememberLogin">
+            <input asp-for="RememberLogin">
+            <strong>@Html.DisplayNameFor(x => x.RememberLogin)</strong>
+        </label>
+    </div>
+    <div class="form-group">
+        <button class="btn btn-primary" name="button" value="login">Login</button>
+        <button class="btn btn-default" name="button" value="cancel">Cancel</button>
+    </div>
 </form>
+<hr/>
+<p class="mb-0">
+    Not registered? <a asp-action="Register">Create an account</a>
+</p>

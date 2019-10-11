@@ -2,9 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using CommandLine;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -51,6 +53,38 @@ namespace PlumPack.IdentityServer.Web
                     {
                         var migrator = scope.ServiceProvider.GetRequiredService<IMigrator>();
                         migrator.Migrate();
+                    }
+                    
+                    using (var scope = host.Services.CreateScope())
+                    {
+                        var normalizer = scope.ServiceProvider.GetRequiredService<ILookupNormalizer>();
+                        var userStore = scope.ServiceProvider.GetRequiredService<IUserStore<User>>();
+                        var userEmailStore = scope.ServiceProvider.GetRequiredService<IUserEmailStore<User>>();
+                        var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+                        
+                        Task.Run(async () =>
+                        {   
+                            var admin = await userStore.FindByNameAsync(normalizer.NormalizeName(User.DefaultUserName), CancellationToken.None);
+                            
+                            if (admin != null)
+                            {
+                                // Admin already exists.
+                                return;
+                            }
+                            
+                            admin = new User();
+                            await userStore.SetUserNameAsync(admin, User.DefaultUserName, CancellationToken.None);
+                            await userEmailStore.SetEmailAsync(admin, User.DefaultEmail, CancellationToken.None);
+                            await userEmailStore.SetEmailConfirmedAsync(admin, true, CancellationToken.None);
+                            var createResult = await userManager.CreateAsync(admin, User.DefaultPassword);
+                            
+                            if (!createResult.Succeeded)
+                            {
+                                throw new Exception($"Couldn't create the default admin user. {string.Join(" ", createResult.Errors)}");
+                            }
+                            
+                        }).GetAwaiter().GetResult();
+                        
                     }
 
                     host.RunAsync().GetAwaiter().GetResult();
