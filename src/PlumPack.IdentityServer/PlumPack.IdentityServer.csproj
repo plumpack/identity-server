@@ -9,7 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PlumPack.Infrastructure\PlumPack.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\shared\PlumPack.Infrastructure\PlumPack.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

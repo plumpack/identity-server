@@ -22,10 +22,5 @@ namespace PlumPack.IdentityServer.ExampleClient.Controllers
         {
             return View();
         }
-        
-        public IActionResult Logout()
-        {
-            return SignOut("Cookies", "oidc");
-        }
     }
 }

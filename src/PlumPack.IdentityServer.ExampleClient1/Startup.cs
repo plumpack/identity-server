@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using PlumPack.IdentityServer.Client;
 
 namespace PlumPack.IdentityServer.ExampleClient
 {
@@ -25,30 +26,7 @@ namespace PlumPack.IdentityServer.ExampleClient
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            
-            services.AddAuthentication(options =>
-                {
-                    options.DefaultScheme = "Cookies";
-                    options.DefaultChallengeScheme = "oidc";
-                })
-                .AddCookie("Cookies")
-                .AddOpenIdConnect("oidc", options =>
-                {
-                    options.SignInScheme = "Cookies";
-
-                    options.Authority = "http://localhost:5000";
-                    options.RequireHttpsMetadata = false;
-
-                    options.ClientId = "example-client";
-                    options.ClientSecret = "secret";
-                    options.ResponseType = "code id_token";
-
-                    options.SaveTokens = true;
-                    options.GetClaimsFromUserInfoEndpoint = true;
-
-                    options.Scope.Add("offline_access");
-                    options.Scope.Add("email");
-                });
+            services.AddIdentityServerClientServices(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -71,6 +49,8 @@ namespace PlumPack.IdentityServer.ExampleClient
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseIdentityServerClient();
             
             app.UseEndpoints(endpoints =>
             {
