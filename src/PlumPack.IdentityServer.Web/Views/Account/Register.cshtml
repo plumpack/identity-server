@@ -23,7 +23,11 @@
         <label asp-for="ConfirmPassword"></label>
         <input type="password" class="form-control" placeholder="ConfirmPassword" asp-for="Password" autocomplete="off">
     </div>
-    <div class="form-group mb-0">
+    <div class="form-group">
         <button class="btn btn-primary">Register</button>
     </div>
 </form>
+<hr/>
+<p class="mb-0">
+    Already have an account? <a asp-action="Login">Login</a>
+</p>

@@ -81,10 +81,32 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "./src/styles.scss");
+/******/ 	return __webpack_require__(__webpack_require__.s = "./src/styles.js");
 /******/ })
 /************************************************************************/
 /******/ ({
+
+/***/ "./src/images/plum-96.png":
+/*!********************************!*\
+  !*** ./src/images/plum-96.png ***!
+  \********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+eval("module.exports = __webpack_require__.p + \"images/plum-96.png\";\n\n//# sourceURL=webpack:///./src/images/plum-96.png?");
+
+/***/ }),
+
+/***/ "./src/styles.js":
+/*!***********************!*\
+  !*** ./src/styles.js ***!
+  \***********************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+eval("__webpack_require__(/*! ./styles.scss */ \"./src/styles.scss\");\n// Shameless: https://icons8.com/icons/set/plum\n__webpack_require__(/*! ./images/plum-96.png */ \"./src/images/plum-96.png\");\n\n//# sourceURL=webpack:///./src/styles.js?");
+
+/***/ }),
 
 /***/ "./src/styles.scss":
 /*!*************************!*\

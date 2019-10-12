@@ -4,7 +4,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 module.exports = {
     mode: "development",
     entry: {
-        styles: "./src/styles.scss",
+        styles: "./src/styles.js",
     },
     output: {
         path: path.resolve(__dirname, "..", "src", "PlumPack.IdentityServer.Web", "wwwroot", "assets")
@@ -28,6 +28,18 @@ module.exports = {
                     }
                 }
             ]
+        },
+        {
+            test: /\.(png|jpg|gif)$/i,
+            use: [
+            {
+                loader: 'file-loader',
+                options: {
+                    name: '[name].[ext]',
+                    outputPath: "images"
+                },
+            },
+            ],
         }]
     },
     plugins: [

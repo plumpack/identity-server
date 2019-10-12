@@ -1,5 +1,8 @@
-$icon-font-path: "~bootstrap/assets/fonts/bootstrap/";
+@import "~bootswatch/dist/pulse/variables";
 @import "~bootstrap-scss/bootstrap";
+@import "~bootswatch/dist/pulse/bootswatch";
+
+$bg-img: url("./images/plum-96.png");
 
 .validation-summary-errors {
     ul {
@@ -10,4 +13,31 @@ $icon-font-path: "~bootstrap/assets/fonts/bootstrap/";
             list-style-type: none;
         }
     }
+}
+
+.plumpack-brand {
+    a {
+        display: block;
+        color: $body-color;
+        font-size: $font-size-lg * 2;
+
+        &:hover {
+            color: $body-color;
+            text-decoration: none;
+        }
+
+        img {
+            width: 50px;
+            display: inline-block;
+        }
+
+        span {
+            vertical-align: middle;
+        }
+
+        .second {
+            color: lighten($body-color, 30%);
+        }
+    }
+    margin-bottom: map-get($spacers, 3);
 }
