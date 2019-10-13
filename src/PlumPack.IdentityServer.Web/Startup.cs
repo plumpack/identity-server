@@ -2,13 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using IdentityServer4.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using PlumPack.Infrastructure.Migrations;
+using PlumPack.IdentityServer.Web.Infrastructure;
 
 namespace PlumPack.IdentityServer.Web
 {
@@ -29,14 +30,11 @@ namespace PlumPack.IdentityServer.Web
         {
             Registrar.Register(services, Configuration);
 
-            var clientApplications = new List<ClientApplication>();
-            Configuration.GetSection("ClientApplications").Bind(clientApplications);
-            
             services.AddIdentity<User, Role>()
                 .AddDefaultTokenProviders();
-
-            services.AddControllersWithViews().AddRazorRuntimeCompilation();
-
+            
+            var clientApplications = new List<ClientApplication>();
+            Configuration.GetSection("ClientApplications").Bind(clientApplications);
             var builder = services.AddIdentityServer(options =>
                 {
                     options.Events.RaiseErrorEvents = true;
@@ -62,7 +60,18 @@ namespace PlumPack.IdentityServer.Web
             {
                 throw new Exception("need to configure key material");
             }
-            
+
+            services.AddControllersWithViews(options =>
+                {
+                    // add the "feature" convention
+                    options.Conventions.Add(new FeatureConvention());
+                })
+                .AddRazorOptions(options =>
+                {
+                    // using the "feature" convention, expand the paths
+                    options.ViewLocationExpanders.Add(new FeatureViewLocationExpander());
+                })
+                .AddRazorRuntimeCompilation();
             services.AddAuthentication();
         }
 
