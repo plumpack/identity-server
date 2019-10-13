@@ -33,6 +33,13 @@ namespace PlumPack.IdentityServer.Web
             services.AddIdentity<User, Role>()
                 .AddDefaultTokenProviders();
             
+            services.Configure<CookieAuthenticationOptions>(
+                IdentityConstants.ApplicationScheme,
+                options =>
+                {
+                    options.LoginPath = "/login";
+                });
+            
             var clientApplications = new List<ClientApplication>();
             Configuration.GetSection("ClientApplications").Bind(clientApplications);
             var builder = services.AddIdentityServer(options =>
@@ -43,6 +50,7 @@ namespace PlumPack.IdentityServer.Web
                     options.Events.RaiseSuccessEvents = true;
                     options.UserInteraction.ErrorUrl = "/error";
                     options.UserInteraction.LogoutUrl = "/logout";
+                    options.UserInteraction.LoginUrl = "/login";
                 })
                 .AddInMemoryIdentityResources(new List<IdentityResource>
                 {
