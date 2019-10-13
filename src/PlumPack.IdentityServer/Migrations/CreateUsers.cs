@@ -14,6 +14,7 @@ namespace PlumPack.IdentityServer.Migrations
 CREATE TABLE ""users"" 
 (
     ""id"" TEXT PRIMARY KEY, 
+    ""name"" TEXT NULL,
     ""user_name"" TEXT NOT NULL,
     ""user_name_normalized"" TEXT NOT NULL,
     ""email"" TEXT NOT NULL,

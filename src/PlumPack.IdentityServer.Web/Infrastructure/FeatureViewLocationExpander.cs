@@ -43,10 +43,10 @@ namespace PlumPack.IdentityServer.Web.Infrastructure
             {
                 $"/Areas/{{2}}/Features/{featureName}/Views/{{0}}.cshtml",
                 $"/Areas/{{2}}/Features/{featureName}/{controllerName}/Views/{{0}}.cshtml",
-                "/Areas/{2}/Features/Shared/Views/{1}/{0}.cshtml",
+                "/Areas/{2}/Features/Shared/{0}.cshtml",
                 $"/Features/{featureName}/Views/{{0}}.cshtml",
                 $"/Features/{featureName}/{controllerName}/Views/{{0}}.cshtml",
-                "/Features/Shared/Views/{1}/{0}.cshtml"
+                "/Features/Shared/{0}.cshtml"
             }.Union(viewLocations);
         }
 

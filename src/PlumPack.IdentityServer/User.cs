@@ -12,6 +12,9 @@ namespace PlumPack.IdentityServer
         [Alias("id"), PrimaryKey, Required]
         public string Id { get; set; }
         
+        [Alias("name")]
+        public string Name { get; set; }
+        
         [Alias("user_name")]
         public string UserName { get; set; }
         

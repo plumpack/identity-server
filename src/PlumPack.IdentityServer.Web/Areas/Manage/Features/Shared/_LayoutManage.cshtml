@@ -1,0 +1,29 @@
+﻿@{
+    Layout = "_Layout";
+
+    var selectedTab = ViewBag.SelectedManageTab;
+}
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header py-3">
+                <span class="h6">Settings</span>
+            </div>
+            <div class="list-group">
+                <a asp-controller="Profile" asp-action="Index" class="list-group-item  list-group-item-action @(selectedTab == "profile" ? "active" : "") d-flex justify-content-between">
+                    <div>
+                        <i class="fa fa-user-circle mr-2"></i>
+                        <span>Profile</span>
+                    </div>
+                    <div>
+                        <i class="fa fa-angle-right"></i>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        @RenderBody()
+    </div>
+</div>

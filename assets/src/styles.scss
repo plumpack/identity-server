@@ -1,8 +1,11 @@
-@import "~bootswatch/dist/pulse/variables";
-@import "~bootstrap-scss/bootstrap";
-@import "~bootswatch/dist/pulse/bootswatch";
+// I'm going to want to stay close to this theme: https://themes.getbootstrap.com/preview/?theme_id=5348
+// I will probably use it when the product is closer to completed.
+// Direct url: https://demo.webpixels.io/purpose-website-ui-kit-v2.0.1/
 
-$bg-img: url("./images/plum-96.png");
+$fa-font-path: "~font-awesome/fonts";
+@import "~font-awesome/scss/font-awesome";
+
+@import "~bootstrap-scss/bootstrap";
 
 .validation-summary-errors {
     ul {
@@ -39,5 +42,39 @@ $bg-img: url("./images/plum-96.png");
             color: lighten($body-color, 30%);
         }
     }
-    margin-bottom: map-get($spacers, 3);
+}
+
+.navbar {
+    background: lighten($primary, 58%);
+    
+    .plumpack-brand {
+        margin-bottom: 0;
+        a {
+            @extend .navbar-brand;
+            font-size: $font-size-lg;
+            img {
+                width:30px;
+            }
+        }
+    }
+}
+
+.site-alert {
+    padding: $alert-padding-y $alert-padding-x;
+
+    p:last-child {
+        margin-bottom: 0;
+    }
+
+    &.success {
+        @extend .alert-info;
+    }
+
+    &.failure {
+        @extend .alert-danger;
+    }
+}
+
+.main {
+    margin-top: map-get($spacers, 3);
 }

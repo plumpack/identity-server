@@ -87,9 +87,14 @@ namespace PlumPack.IdentityServer.Identity
             }
         }
 
-        public Task<IdentityResult> UpdateAsync(User user, CancellationToken cancellationToken)
+        public async Task<IdentityResult> UpdateAsync(User user, CancellationToken cancellationToken)
         {
-            throw new System.NotImplementedException();
+            using (var connection = _dataService.OpenDbConnection())
+            {
+                await connection.SaveAsync(user, token: cancellationToken);
+            }
+            
+            return IdentityResult.Success;
         }
 
         public Task<IdentityResult> DeleteAsync(User user, CancellationToken cancellationToken)

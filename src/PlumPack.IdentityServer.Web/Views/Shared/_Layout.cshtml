@@ -1,32 +1,66 @@
 ﻿@using IdentityServer4.Extensions
+
+@{
+    var successMessages = ViewData["currentSuccessMessages"] as List<string>;
+    var failureMessages = ViewData["currentFailureMessages"] as List<string>;
+}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="~/assets/styles.css" />
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="~/assets/styles.css"/>
 </head>
 <body>
-    <header>
-        <nav>
-            <ul>
+<div class="navbar navbar-light">
+    <div class="container">
+        <partial name="_Brand"></partial>
+        <ul>
+            @if (User.IsAuthenticated())
+            {
                 <li>
-                    <a asp-controller="Home" asp-action="Index">Home</a>
+                    Hello @User.Identity.Name, <a asp-controller="Logout" asp-area="">Logout</a>
                 </li>
-                @if (User.IsAuthenticated())
-                {
-                    <li>
-                        Hello @User.Identity.Name, <a asp-controller="Logout" asp-area="">Logout</a>
-                    </li>
-                }
-            </ul>
-        </nav>
-    </header>
+            }
+            else
+            {
+                <li>
+                    <a asp-controller="Login" asp-area="">Login</a>
+                </li>
+            }
+        </ul>
+    </div>
+</div>
+@if (successMessages != null && successMessages.Count > 0)
+{
+    <div class="site-alert success">
+        <div class="container">
+            @foreach (var message in successMessages)
+            {
+                <p>@message</p>
+            }
+        </div>
+    </div>
+}
+@if (failureMessages != null && failureMessages.Count > 0)
+{
+    <div class="site-alert failure">
+        <div class="container">
+            @foreach (var message in failureMessages)
+            {
+                <p>@message</p>
+            }
+        </div>
+    </div>
+}
+<div class="main">
     <div class="container">
         <main role="main">
             @RenderBody()
         </main>
     </div>
-    @RenderSection("Scripts", required: false)
+</div>
+@RenderSection("Scripts", required: false)
 </body>
 </html>

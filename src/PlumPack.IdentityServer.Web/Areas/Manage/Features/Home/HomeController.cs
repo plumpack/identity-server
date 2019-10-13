@@ -8,7 +8,7 @@ namespace PlumPack.IdentityServer.Web.Areas.Manage.Features.Home
     {
         public ActionResult Index()
         {
-            return View();
+            return RedirectToAction("Index", "Profile");
         }
     }
 }
