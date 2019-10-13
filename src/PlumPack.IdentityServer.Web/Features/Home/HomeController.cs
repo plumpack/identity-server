@@ -9,27 +9,9 @@ namespace PlumPack.IdentityServer.Web.Features.Home
     [Authorize]
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-        private readonly IWebHostEnvironment _environment;
-
-        public HomeController(ILogger<HomeController> logger, IWebHostEnvironment environment)
-        {
-            _logger = logger;
-            _environment = environment;
-        }
-
         public IActionResult Index()
         {
-            if (_environment.IsDevelopment())
-            {
-                // only show in development
-                return View();
-            }
-
-            _logger.LogInformation("Homepage is disabled in production. Returning 404.");
-            return NotFound();
+            return RedirectToAction("Index", new {controller = "Home", area = "Manage"});
         }
-        
-        
     }
 }

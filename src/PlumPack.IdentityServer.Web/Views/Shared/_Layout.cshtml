@@ -16,7 +16,7 @@
                 @if (User.IsAuthenticated())
                 {
                     <li>
-                        Hello @User.Identity.Name, <a asp-controller="Logout">Logout</a>
+                        Hello @User.Identity.Name, <a asp-controller="Logout" asp-area="">Logout</a>
                     </li>
                 }
             </ul>

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -74,6 +75,8 @@ namespace PlumPack.IdentityServer.Web
                 {
                     // add the "feature" convention
                     options.Conventions.Add(new FeatureConvention());
+                    // Auto add [Area("areaName"] to controllers.
+                    options.Conventions.Add(new AutoAreaConvention());
                 })
                 .AddRazorOptions(options =>
                 {
@@ -82,6 +85,8 @@ namespace PlumPack.IdentityServer.Web
                 })
                 .AddRazorRuntimeCompilation();
             services.AddAuthentication();
+
+            services.Configure<RouteOptions>(options => { options.LowercaseUrls = true; });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -121,6 +126,8 @@ namespace PlumPack.IdentityServer.Web
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapAreaControllerRoute("manage", "Manage", "manage/{controller=Home}/{action=Index}/{id?}");
+
                 endpoints.MapControllerRoute(
                     "default",
                     "{controller=Home}/{action=Index}/{id?}");
