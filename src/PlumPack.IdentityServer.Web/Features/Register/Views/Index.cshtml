@@ -1,6 +1,6 @@
 @model RegisterViewModel
 @{
-    Layout = "_LayoutAccount";
+    Layout = $"_LayoutAccount";
 }
 
 <h1 class="card-title">Register</h1>
@@ -29,5 +29,5 @@
 </form>
 <hr/>
 <p class="mb-0">
-    Already have an account? <a asp-action="Login">Login</a>
+    Already have an account? <a asp-controller="Login">Login</a>
 </p>

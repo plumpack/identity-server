@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace PlumPack.IdentityServer.Web.Models
+namespace PlumPack.IdentityServer.Web.Features.Register.Models
 {
     public class RegisterViewModel
     {

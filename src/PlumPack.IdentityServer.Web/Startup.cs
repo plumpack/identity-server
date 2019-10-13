@@ -38,10 +38,10 @@ namespace PlumPack.IdentityServer.Web
                 options =>
                 {
                     options.LoginPath = "/login";
+                    options.LogoutPath = "/logout";
                 });
-            
-            var clientApplications = new List<ClientApplication>();
-            Configuration.GetSection("ClientApplications").Bind(clientApplications);
+
+            var clientApplications = ClientApplication.GetClientApplications(Configuration);
             var builder = services.AddIdentityServer(options =>
                 {
                     options.Events.RaiseErrorEvents = true;
@@ -51,6 +51,7 @@ namespace PlumPack.IdentityServer.Web
                     options.UserInteraction.ErrorUrl = "/error";
                     options.UserInteraction.LogoutUrl = "/logout";
                     options.UserInteraction.LoginUrl = "/login";
+                    options.UserInteraction.LogoutUrl = "/logout";
                 })
                 .AddInMemoryIdentityResources(new List<IdentityResource>
                 {
@@ -58,7 +59,7 @@ namespace PlumPack.IdentityServer.Web
                     new IdentityResources.Profile(),
                     new IdentityResources.Email()
                 })
-                .AddInMemoryClients(clientApplications.Select(x => x.BuildIdentityServerClient()))
+                .AddInMemoryClients(clientApplications.Select(x => x.BuildIdentityServerClient()).ToList())
                 .AddAspNetIdentity<User>();
             if (WebHostEnvironment.IsDevelopment())
             {

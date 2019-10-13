@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
-using PlumPack.IdentityServer.Web.Models;
+using PlumPack.IdentityServer.Web.Features.Error.Models;
 
-namespace PlumPack.IdentityServer.Web.Controllers
+namespace PlumPack.IdentityServer.Web.Features.Error
 {
     [AllowAnonymous]
     public class ErrorController : Controller

@@ -1,50 +1,39 @@
-using System;
-using System.Data;
+using System.Security.Policy;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
-using IdentityServer4.Events;
-using IdentityServer4.Models;
-using IdentityServer4.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
-using PlumPack.IdentityServer.Web.Models;
+using PlumPack.IdentityServer.Web.Features.Register.Models;
 using PlumPack.Infrastructure.Email;
-using ServiceStack;
 
-namespace PlumPack.IdentityServer.Web.Controllers
+namespace PlumPack.IdentityServer.Web.Features.Register
 {
-    public class AccountController : Controller
+    public class RegisterController : Controller
     {
-        private readonly IIdentityServerInteractionService _interaction;
-        private readonly SignInManager<User> _signInManager;
-        private readonly UserManager<User> _userManager;
-        private readonly IEventService _events;
-        private readonly IEmailSender _emailSender;
         private readonly IUserStore<User> _userStore;
         private readonly IUserEmailStore<User> _userEmailStore;
+        private readonly UserManager<User> _userManager;
+        private readonly IEmailSender _emailSender;
+        private readonly SignInManager<User> _signInManager;
 
-        public AccountController(IIdentityServerInteractionService interaction,
-            SignInManager<User> signInManager,
+        public RegisterController(IUserStore<User> userStore,
+            IUserEmailStore<User> userEmailStore,
             UserManager<User> userManager,
-            IEventService events,
             IEmailSender emailSender,
-            IUserStore<User> userStore,
-            IUserEmailStore<User> userEmailStore)
+            SignInManager<User> signInManager)
         {
-            _interaction = interaction;
-            _signInManager = signInManager;
-            _userManager = userManager;
-            _events = events;
-            _emailSender = emailSender;
             _userStore = userStore;
             _userEmailStore = userEmailStore;
+            _userManager = userManager;
+            _emailSender = emailSender;
+            _signInManager = signInManager;
         }
         
         [HttpGet]
-        public IActionResult Register(string returnUrl)
+        public IActionResult Index(string returnUrl)
         {
             var model = new RegisterViewModel();
             model.ReturnUrl = returnUrl;
@@ -54,7 +43,7 @@ namespace PlumPack.IdentityServer.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterViewModel model)
+        public async Task<IActionResult> Index(RegisterViewModel model)
         {
             if (!ModelState.IsValid)
             {

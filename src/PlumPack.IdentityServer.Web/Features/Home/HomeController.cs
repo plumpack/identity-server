@@ -1,11 +1,10 @@
-﻿using System.Diagnostics;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace PlumPack.IdentityServer.Web.Controllers
+namespace PlumPack.IdentityServer.Web.Features.Home
 {
     [Authorize]
     public class HomeController : Controller

@@ -1,15 +1,13 @@
 using System.Threading.Tasks;
-using IdentityModel;
 using IdentityServer4.Events;
 using IdentityServer4.Extensions;
 using IdentityServer4.Services;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using PlumPack.IdentityServer.Web.Models;
+using PlumPack.IdentityServer.Web.Features.Logout.Models;
 
-namespace PlumPack.IdentityServer.Web.Controllers
+namespace PlumPack.IdentityServer.Web.Features.Logout
 {
     [AllowAnonymous]
     public class LogoutController : Controller

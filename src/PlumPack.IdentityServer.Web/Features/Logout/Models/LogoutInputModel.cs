@@ -1,4 +1,4 @@
-namespace PlumPack.IdentityServer.Web.Models
+namespace PlumPack.IdentityServer.Web.Features.Logout.Models
 {
     public class LogoutInputModel
     {

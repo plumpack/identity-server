@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using IdentityServer4;
 using IdentityServer4.Models;
+using Microsoft.Extensions.Configuration;
 
-namespace PlumPack.IdentityServer.Web
+namespace PlumPack.IdentityServer.Web.Infrastructure
 {
     public class ClientApplication
     {
@@ -20,6 +21,18 @@ namespace PlumPack.IdentityServer.Web
         
         public string FrontChannelLogoutUri { get; set; }
 
+        public static List<ClientApplication> GetClientApplications(IConfiguration configuration)
+        {
+            var clientApplications = new List<ClientApplication>();
+            var section = configuration.GetSection("ClientApplications");
+            if (!section.Exists())
+            {
+                return new List<ClientApplication>();
+            }
+            section.Bind(clientApplications);
+            return clientApplications;
+        }
+        
         public Client BuildIdentityServerClient()
         {
             return new Client
