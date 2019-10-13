@@ -78,3 +78,12 @@ $fa-font-path: "~font-awesome/fonts";
 .main {
     margin-top: map-get($spacers, 3);
 }
+
+form {
+    .input-validation-error {
+        @extend .is-invalid;
+    }
+    .field-validation-error {
+        @extend .invalid-feedback;
+    }
+}

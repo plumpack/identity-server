@@ -61,11 +61,11 @@ namespace PlumPack.IdentityServer.Web.Features.Register
                 var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                 
-                var callbackUrl = Url.Page(
-                    "/account/confirmemail",
-                    pageHandler: null,
-                    values: new { userId = userId, code = code },
-                    protocol: Request.Scheme);
+                var callbackUrl = Url.Action("Index", "ConfirmEmail", new
+                    {
+                        area = "",
+                        userId, code
+                    }, Request.Scheme);
 
                 await _emailSender.SendEmailAsync(user.Email, "Confirm your email",
                     $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");

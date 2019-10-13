@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using IdentityServer4.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
@@ -83,10 +85,17 @@ namespace PlumPack.IdentityServer.Web
                     // using the "feature" convention, expand the paths
                     options.ViewLocationExpanders.Add(new FeatureViewLocationExpander());
                 })
+                .AddFluentValidation()
                 .AddRazorRuntimeCompilation();
             services.AddAuthentication();
 
             services.Configure<RouteOptions>(options => { options.LowercaseUrls = true; });
+            
+            // Add all of our validators
+            foreach (var validator in ValidatorDiscovery.DiscoverValidators(typeof(Startup).Assembly))
+            {
+                services.AddTransient(validator.Interface, validator.Implementation);
+            }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -21,6 +21,17 @@
                     </div>
                 </a>
             </div>
+            <div class="list-group">
+                <a asp-controller="Email" asp-action="Index" class="list-group-item  list-group-item-action @(selectedTab == "email" ? "active" : "") d-flex justify-content-between">
+                    <div>
+                        <i class="fa fa-envelope mr-2"></i>
+                        <span>Email</span>
+                    </div>
+                    <div>
+                        <i class="fa fa-angle-right"></i>
+                    </div>
+                </a>
+            </div>
         </div>
     </div>
     <div class="col-md-8">

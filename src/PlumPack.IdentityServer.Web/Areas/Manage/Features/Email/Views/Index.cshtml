@@ -1,0 +1,48 @@
+@model EmailViewModel
+@{
+    ViewBag.SelectedManageTab = "email";
+}
+
+
+<h1 class="card-title">Email</h1>
+<form asp-action="Index">
+    <div class="form-group">
+        <input asp-for="Email" readonly class="form-control-plaintext"/>
+        
+        @if (!Model.IsEmailConfirmed)
+        {
+            <div class="alert">
+                <span class="text-success font-weight-bold"><i class="fa fa-check"></i></span> <text>You're email is confirmed.</text>
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-warning">
+                <span class="text-danger font-weight-bold"><i class="fa fa-exclamation"></i></span> <text>You're email is not confirmed.</text>
+            </div>
+        }
+    </div>
+    @if (Model.IsEmailConfirmed)
+    {
+        <div class="form-group">
+            <button class="btn btn-primary" name="ResendEmailConfirmation">Resend verification email</button>
+        </div>
+    }
+</form>
+<h2>Change your email address</h2>
+<form asp-action="Index">
+    <partial name="_ValidationSummary"></partial>
+    <div class="form-group">
+        <label asp-for="NewEmail"></label>
+        <input asp-for="NewEmail" class="form-control"/>
+        <span asp-validation-for="NewEmail"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="NewEmailConfirm"></label>
+        <input asp-for="NewEmailConfirm" class="form-control"/>
+        <span asp-validation-for="NewEmailConfirm"></span>
+    </div>
+    <div class="form-group">
+        <button class="btn btn-primary" name="ChangeEmailAddress">Change email address</button>
+    </div>
+</form>

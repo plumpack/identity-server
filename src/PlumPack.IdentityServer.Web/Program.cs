@@ -12,6 +12,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using PlumPack.Infrastructure.Migrations;
+using Serilog;
+using Serilog.Events;
 
 namespace PlumPack.IdentityServer.Web
 {
@@ -44,6 +46,13 @@ namespace PlumPack.IdentityServer.Web
         
         public static void Main(string[] args)
         {
+            Log.Logger = new LoggerConfiguration()
+                .ReadFrom.Configuration(new ConfigurationBuilder()
+                    .AddJsonFile("logging.json", true)
+                    .Build())
+                .WriteTo.Console()
+                .CreateLogger();
+            
             Parser.Default.ParseArguments<Options>(args)
                 .WithParsed(o =>
                 {
@@ -80,7 +89,8 @@ namespace PlumPack.IdentityServer.Web
                             
                             if (!createResult.Succeeded)
                             {
-                                throw new Exception($"Couldn't create the default admin user. {string.Join(" ", createResult.Errors)}");
+                                Log.Logger.Fatal("Couldn't create the default admin user.");
+                                Environment.Exit(1);
                             }
                             
                         }).GetAwaiter().GetResult();
@@ -93,15 +103,20 @@ namespace PlumPack.IdentityServer.Web
 
         public static IHostBuilder CreateHostBuilder(Options options) =>
             Host.CreateDefaultBuilder()
+                .ConfigureLogging(config =>
+                {
+                    config.ClearProviders();
+                    config.AddSerilog();
+                })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     var urls = options.BuildUrls();
                     if (string.IsNullOrEmpty(urls))
                     {
-                        Console.Error.WriteLine("You must provide a port to listen on.");
+                        Log.Logger.Fatal("Couldn't create the default admin user.");
                         Environment.Exit(1);
                     }
-                    Console.WriteLine($"Listening on: {urls}");
+                    Log.Logger.Information($"Listening on: {urls}");
                     webBuilder.UseUrls(urls);
                     webBuilder.UseStartup<Startup>();
                 });
