@@ -5,24 +5,50 @@ namespace PlumPack.IdentityServer.Web
 {
     public class BaseController : Controller
     {
-        public void AddSuccessMessage(string message)
+        public void AddSuccessMessage(string message, bool persist = false)
         {
-            if (!(ViewData["currentSuccessMessages"] is List<string> currentMessages))
+            if (persist)
             {
-                currentMessages = new List<string>();
+                if (!(TempData["currentSuccessMessages"] is List<string> currentMessages))
+                {
+                    currentMessages = new List<string>();
+                }
+
+                currentMessages.Add(message);
+                TempData["currentSuccessMessages"] = currentMessages;
             }
-            currentMessages.Add(message);
-            ViewData["currentSuccessMessages"] = currentMessages;
+            else
+            {
+                if (!(ViewData["currentSuccessMessages"] is List<string> currentMessages))
+                {
+                    currentMessages = new List<string>();
+                }
+
+                currentMessages.Add(message);
+                ViewData["currentSuccessMessages"] = currentMessages;
+            }
         }
 
-        public void AddFailureMessage(string message)
+        public void AddFailureMessage(string message, bool persist = false)
         {
-            if (!(ViewData["currentFailureMessages"] is List<string> currentMessages))
+            if (persist)
             {
-                currentMessages = new List<string>();
+                if (!(TempData["currentFailureMessages"] is List<string> currentMessages))
+                {
+                    currentMessages = new List<string>();
+                }
+                currentMessages.Add(message);
+                TempData["currentFailureMessages"] = currentMessages;
             }
-            currentMessages.Add(message);
-            ViewData["currentFailureMessages"] = currentMessages;
+            else
+            {
+                if (!(ViewData["currentFailureMessages"] is List<string> currentMessages))
+                {
+                    currentMessages = new List<string>();
+                }
+                currentMessages.Add(message);
+                ViewData["currentFailureMessages"] = currentMessages;
+            }
         }
         
         public void AddFailureMessageFromModelState()

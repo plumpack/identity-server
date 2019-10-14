@@ -1,10 +1,4 @@
 ﻿@using IdentityServer4.Extensions
-
-@{
-    var successMessages = ViewData["currentSuccessMessages"] as List<string>;
-    var failureMessages = ViewData["currentFailureMessages"] as List<string>;
-}
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -32,28 +26,7 @@
         </ul>
     </div>
 </div>
-@if (successMessages != null && successMessages.Count > 0)
-{
-    <div class="site-alert success">
-        <div class="container">
-            @foreach (var message in successMessages)
-            {
-                <p>@message</p>
-            }
-        </div>
-    </div>
-}
-@if (failureMessages != null && failureMessages.Count > 0)
-{
-    <div class="site-alert failure">
-        <div class="container">
-            @foreach (var message in failureMessages)
-            {
-                <p>@message</p>
-            }
-        </div>
-    </div>
-}
+<partial name="_SiteAlerts"></partial>
 <div class="main">
     <div class="container">
         <main role="main">

@@ -1,0 +1,48 @@
+﻿@{
+    var successMessages = ViewData["currentSuccessMessages"] as List<string>;
+    var failureMessages = ViewData["currentFailureMessages"] as List<string>;
+
+    var tempSuccessMessages = TempData["currentSuccessMessages"] as string[];
+    var tempFailureMessages = TempData["currentFailureMessages"] as string[];
+
+    if (tempSuccessMessages != null && tempSuccessMessages.Length > 0)
+    {
+        if (successMessages == null)
+        {
+            successMessages = new List<string>();
+        }
+        successMessages.AddRange(tempSuccessMessages);
+    }
+    
+    if (tempFailureMessages != null && tempFailureMessages.Length > 0)
+    {
+        if (failureMessages == null)
+        {
+            failureMessages = new List<string>();
+        }
+        failureMessages.AddRange(tempFailureMessages);
+    }
+}
+
+@if (successMessages != null && successMessages.Count > 0)
+{
+    <div class="site-alert success">
+        <div class="container">
+            @foreach (var message in successMessages)
+            {
+                <p>@message</p>
+            }
+        </div>
+    </div>
+}
+@if (failureMessages != null && failureMessages.Count > 0)
+{
+    <div class="site-alert failure">
+        <div class="container">
+            @foreach (var message in failureMessages)
+            {
+                <p>@message</p>
+            }
+        </div>
+    </div>
+}
