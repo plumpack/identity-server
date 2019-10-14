@@ -2,6 +2,7 @@ using System.Net.Mail;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
@@ -10,6 +11,7 @@ using PlumPack.Infrastructure.Email;
 
 namespace PlumPack.IdentityServer.Web.Areas.Manage.Features.Email
 {
+    [Authorize]
     public class EmailController : BaseController
     {
         private readonly UserManager<User> _userManager;

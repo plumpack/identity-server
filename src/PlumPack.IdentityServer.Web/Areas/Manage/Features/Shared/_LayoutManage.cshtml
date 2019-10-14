@@ -22,6 +22,17 @@
                 </a>
             </div>
             <div class="list-group">
+                <a asp-controller="ChangePassword" asp-action="Index" class="list-group-item  list-group-item-action @(selectedTab == "password" ? "active" : "") d-flex justify-content-between">
+                    <div>
+                        <i class="fa fa-user-circle mr-2"></i>
+                        <span>Password</span>
+                    </div>
+                    <div>
+                        <i class="fa fa-angle-right"></i>
+                    </div>
+                </a>
+            </div>
+            <div class="list-group">
                 <a asp-controller="Email" asp-action="Index" class="list-group-item  list-group-item-action @(selectedTab == "email" ? "active" : "") d-flex justify-content-between">
                     <div>
                         <i class="fa fa-envelope mr-2"></i>

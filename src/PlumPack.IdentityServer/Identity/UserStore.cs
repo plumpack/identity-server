@@ -162,11 +162,11 @@ namespace PlumPack.IdentityServer.Identity
             return Task.CompletedTask;
         }
 
-        public Task<User> FindByEmailAsync(string normalizedEmail, CancellationToken cancellationToken)
+        public async Task<User> FindByEmailAsync(string normalizedEmail, CancellationToken cancellationToken)
         {
             using (var connection = new ConScope(_dataService))
             {
-                return connection.Connection.SingleAsync<User>(x => x.EmailNormalized == normalizedEmail, cancellationToken);
+                return await connection.Connection.SingleAsync<User>(x => x.EmailNormalized == normalizedEmail, cancellationToken);
             }
         }
 
