@@ -91,6 +91,8 @@ namespace PlumPack.IdentityServer.Identity
         {
             using (var connection = _dataService.OpenDbConnection())
             {
+                // TODO: Check and make sure the username isn't already in use.
+                // TODO: Check and make sure the email isn't already in use.
                 await connection.SaveAsync(user, token: cancellationToken);
             }
             

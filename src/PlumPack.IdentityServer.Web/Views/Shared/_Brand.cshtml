@@ -1,7 +1,8 @@
-﻿
+﻿@using PlumPack.Infrastructure
+@inject PlumPackOptions Options
 
 <div class="plumpack-brand text-center">
-    <a href="~/">
+    <a href="@Options.MainSiteUrl">
       <img src="~/assets/images/plum-96.png" /><span class="first">Plum</span><span class="second">Pack</span>
     </a>
 </div>

@@ -62,7 +62,32 @@ namespace PlumPack.IdentityServer.Web.Areas.Manage.Features.Email
 
             if (model.ChangeEmailAddress)
             {
-               AddSuccessMessage("TODO");
+                var user = await _userManager.GetUserAsync(User);
+                
+                
+                if (model.NewEmail != user.Email)
+                {
+                    var userId = await _userManager.GetUserIdAsync(user);
+                    var code = await _userManager.GenerateChangeEmailTokenAsync(user, model.NewEmail);
+                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                    var callbackUrl = Url.Action("Change", "ConfirmEmail", new
+                    {
+                        area = "",
+                        userId, code, email = model.NewEmail
+                    }, Request.Scheme);
+                    await _emailSender.SendEmailAsync(
+                        new MailAddress(model.NewEmail), 
+                        "Confirm your email",
+                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+                    AddSuccessMessage("Confirmation link to change email sent. Please check your email.");
+                    
+                    return View(await BuildViewModel());
+                }
+
+                AddFailureMessage("Your email is unchanged.");
+
+                return View(await BuildViewModel());
             }
 
             return View(await BuildViewModel(model));
