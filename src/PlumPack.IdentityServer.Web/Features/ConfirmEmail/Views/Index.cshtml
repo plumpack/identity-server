@@ -1,0 +1,19 @@
+﻿@model ConfirmEmailViewModel
+@{
+    Layout = $"_LayoutAccount";
+}
+
+<h1 class="card-title">Email confirmation</h1>
+@if (Model.Status)
+{
+    <p class="alert alert-success">
+        @Model.StatusMessage
+    </p>
+    <p class="mb-0">
+        Click <a asp-controller="Login" asp-action="Index">here</a> to login.
+    </p>
+}
+else
+{
+    <p class="alert alert-danger mb-0">@Model.StatusMessage</p>
+}

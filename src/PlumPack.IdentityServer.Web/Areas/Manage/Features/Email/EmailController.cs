@@ -1,3 +1,4 @@
+using System.Net.Mail;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
@@ -52,7 +53,7 @@ namespace PlumPack.IdentityServer.Web.Areas.Manage.Features.Email
                     }, Request.Scheme);
                 
                 await _emailSender.SendEmailAsync(
-                    email,
+                    new MailAddress(email), 
                     "Confirm your email",
                     $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 

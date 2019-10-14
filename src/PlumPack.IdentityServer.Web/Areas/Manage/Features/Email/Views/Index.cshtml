@@ -9,7 +9,7 @@
     <div class="form-group">
         <input asp-for="Email" readonly class="form-control-plaintext"/>
         
-        @if (!Model.IsEmailConfirmed)
+        @if (Model.IsEmailConfirmed)
         {
             <div class="alert">
                 <span class="text-success font-weight-bold"><i class="fa fa-check"></i></span> <text>You're email is confirmed.</text>
@@ -22,7 +22,7 @@
             </div>
         }
     </div>
-    @if (Model.IsEmailConfirmed)
+    @if (!Model.IsEmailConfirmed)
     {
         <div class="form-group">
             <button class="btn btn-primary" name="ResendEmailConfirmation">Resend verification email</button>
