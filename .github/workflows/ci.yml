@@ -1,0 +1,26 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+
+    - uses: actions/checkout@v1
+    - run: git submodule update --init --recursive
+
+    - uses: actions/setup-dotnet@master
+      with:
+        dotnet-version: '3.0.100'
+
+    - run: dotnet tool install -g GitVersion.Tool --version 5.0.2-beta1.126
+
+    - run: |
+        export PATH=$PATH:$HOME/.dotnet/tools
+        ./build.sh ci
+      env:
+        DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+        DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
