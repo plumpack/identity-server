@@ -1,7 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using CommandLine;
@@ -13,7 +12,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using PlumPack.Infrastructure.Migrations;
 using Serilog;
-using Serilog.Events;
 
 namespace PlumPack.IdentityServer.Web
 {
@@ -96,13 +94,21 @@ namespace PlumPack.IdentityServer.Web
                         }).GetAwaiter().GetResult();
                         
                     }
-
+                    
                     host.RunAsync().GetAwaiter().GetResult();
                 });
         }
 
-        public static IHostBuilder CreateHostBuilder(Options options) =>
-            Host.CreateDefaultBuilder()
+        public static IHostBuilder CreateHostBuilder(Options options)
+        {
+            return Host.CreateDefaultBuilder()
+                .ConfigureHostConfiguration(builder =>
+                {
+                    if (File.Exists("/etc/plumpack/identity-server.yml"))
+                    {
+                        builder.AddYamlFile("/etc/plumpack/identity-server.yml");
+                    }
+                })
                 .ConfigureLogging(config =>
                 {
                     config.ClearProviders();
@@ -116,9 +122,11 @@ namespace PlumPack.IdentityServer.Web
                         Log.Logger.Fatal("Couldn't create the default admin user.");
                         Environment.Exit(1);
                     }
+
                     Log.Logger.Information($"Listening on: {urls}");
                     webBuilder.UseUrls(urls);
                     webBuilder.UseStartup<Startup>();
                 });
+        }
     }
 }
