@@ -4,6 +4,7 @@ using IdentityServer4.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.Options;
 using PlumPack.IdentityServer.Web.Features.ConfirmEmail.Model;
 using PlumPack.Infrastructure;
 
@@ -15,10 +16,10 @@ namespace PlumPack.IdentityServer.Web.Features.ConfirmEmail
         private readonly PlumPackOptions _plumPackOptions;
 
         public ConfirmEmailController(UserManager<User> userManager,
-            PlumPackOptions plumPackOptions)
+            IOptions<PlumPackOptions> plumPackOptions)
         {
             _userManager = userManager;
-            _plumPackOptions = plumPackOptions;
+            _plumPackOptions = plumPackOptions.Value;
         }
         
         public async Task<ActionResult> Index(string userId, string code)
