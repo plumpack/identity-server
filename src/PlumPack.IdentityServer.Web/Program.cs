@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using CommandLine;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -21,26 +22,7 @@ namespace PlumPack.IdentityServer.Web
         public class Options
         {
             [Option('h', "http-port", Default = 5000)]
-            public int? HttpPort { get; set; }
-            
-            [Option('s', "https-port")]
-            public int? HttpsPort { get; set; }
-
-            public string BuildUrls()
-            {
-                var result = new List<string>();
-                if (HttpPort.HasValue)
-                {
-                    result.Add($"http://*:{HttpPort}/");
-                }
-
-                if (HttpsPort.HasValue)
-                {
-                    result.Add($"https://*:{HttpsPort}/");
-                }
-
-                return string.Join(";", result);
-            }
+            public int HttpPort { get; set; }
         }
         
         public static void Main(string[] args)
@@ -118,13 +100,7 @@ namespace PlumPack.IdentityServer.Web
                 })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    var urls = options.BuildUrls();
-                    if (string.IsNullOrEmpty(urls))
-                    {
-                        Log.Logger.Fatal("Couldn't create the default admin user.");
-                        Environment.Exit(1);
-                    }
-
+                    var urls = $"http://*:{options.HttpPort}/";
                     Log.Logger.Information($"Listening on: {urls}");
                     webBuilder.UseUrls(urls);
                     webBuilder.UseStartup<Startup>();
