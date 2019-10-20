@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using PlumPack.Infrastructure.Data;
 using PlumPack.Infrastructure.Migrations;
 using Serilog;
 
@@ -58,6 +59,7 @@ namespace PlumPack.IdentityServer.Web
 
                     using (var scope = host.Services.CreateScope())
                     {
+                        scope.ServiceProvider.GetRequiredService<IDataService>().WaitForDbConnection(TimeSpan.FromSeconds(10));
                         var migrator = scope.ServiceProvider.GetRequiredService<IMigrator>();
                         migrator.Migrate();
                     }
