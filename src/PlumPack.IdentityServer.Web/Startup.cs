@@ -4,6 +4,7 @@ using System.Linq;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using IdentityServer4.Models;
+using IdentityServer4.Stores;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -32,7 +33,10 @@ namespace PlumPack.IdentityServer.Web
         public void ConfigureServices(IServiceCollection services)
         {
             Registrar.Register(services, Configuration);
-
+            PlumPack.Infrastructure.ServiceContext.AddServicesFromAssembly(typeof(Startup).Assembly, services);
+            services.AddSingleton(provider => provider.GetRequiredService<KeyStoreFactory>().BuildValidationKeysStore());
+            services.AddSingleton(provider => provider.GetRequiredService<KeyStoreFactory>().BuildSigningCredentialStore());
+            
             services.AddIdentity<User, Role>()
                 .AddDefaultTokenProviders();
 
@@ -61,7 +65,7 @@ namespace PlumPack.IdentityServer.Web
                 });
 
             var clientApplications = ClientApplication.GetClientApplications(Configuration);
-            var builder = services.AddIdentityServer(options =>
+            services.AddIdentityServer(options =>
                 {
                     options.Events.RaiseErrorEvents = true;
                     options.Events.RaiseInformationEvents = true;
@@ -80,15 +84,7 @@ namespace PlumPack.IdentityServer.Web
                 })
                 .AddInMemoryClients(clientApplications.Select(x => x.BuildIdentityServerClient()).ToList())
                 .AddAspNetIdentity<User>();
-            if (WebHostEnvironment.IsDevelopment())
-            {
-                builder.AddDeveloperSigningCredential();
-            }
-            else
-            {
-                throw new Exception("need to configure key material");
-            }
-
+            
             services.AddControllersWithViews(options =>
                 {
                     // add the "feature" convention
