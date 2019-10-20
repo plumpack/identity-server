@@ -23,7 +23,7 @@ namespace PlumPack.IdentityServer.Web
             [Option('h', "http-port", Default = 5000)]
             public int? HttpPort { get; set; }
             
-            [Option('s', "https-port", Default = 5001)]
+            [Option('s', "https-port")]
             public int? HttpsPort { get; set; }
 
             public string BuildUrls()
@@ -59,7 +59,7 @@ namespace PlumPack.IdentityServer.Web
 
                     using (var scope = host.Services.CreateScope())
                     {
-                        scope.ServiceProvider.GetRequiredService<IDataService>().WaitForDbConnection(TimeSpan.FromSeconds(10));
+                        scope.ServiceProvider.GetRequiredService<IDataService>().WaitForDbConnection(TimeSpan.FromSeconds(5));
                         var migrator = scope.ServiceProvider.GetRequiredService<IMigrator>();
                         migrator.Migrate();
                     }
