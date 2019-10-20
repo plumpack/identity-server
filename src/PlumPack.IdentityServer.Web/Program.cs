@@ -31,12 +31,12 @@ namespace PlumPack.IdentityServer.Web
                 var result = new List<string>();
                 if (HttpPort.HasValue)
                 {
-                    result.Add($"http://localhost:{HttpPort}/");
+                    result.Add($"http://*:{HttpPort}/");
                 }
 
                 if (HttpsPort.HasValue)
                 {
-                    result.Add($"https://localhost:{HttpsPort}/");
+                    result.Add($"https://*:{HttpsPort}/");
                 }
 
                 return string.Join(";", result);
