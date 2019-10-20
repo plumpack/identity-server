@@ -102,6 +102,13 @@ namespace PlumPack.IdentityServer.Web
         public static IHostBuilder CreateHostBuilder(Options options)
         {
             return Host.CreateDefaultBuilder()
+                .ConfigureHostConfiguration(builder =>
+                {
+                    if (File.Exists("/etc/plumpack/identity-server/config.yml"))
+                    {
+                        builder.AddYamlFile("/etc/plumpack/identity-server/config.yml");
+                    }
+                })
                 .ConfigureLogging(config =>
                 {
                     config.ClearProviders();
