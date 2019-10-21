@@ -1,19 +1,14 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using FluentValidation;
-using FluentValidation.AspNetCore;
 using IdentityServer4.Models;
-using IdentityServer4.Stores;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PlumPack.IdentityServer.Web.Infrastructure;
+using PlumPack.Web;
 
 namespace PlumPack.IdentityServer.Web
 {
@@ -25,21 +20,23 @@ namespace PlumPack.IdentityServer.Web
             WebHostEnvironment = webHostEnvironment;
         }
 
-        public IConfiguration Configuration { get; }
-        
-        public IWebHostEnvironment WebHostEnvironment { get; }
+        private IConfiguration Configuration { get; }
+
+        private IWebHostEnvironment WebHostEnvironment { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            Registrar.Register(services, Configuration);
+            Registrar.Register(services, Configuration, "/etc/plumpack/identity-server/");
+            
+            // Add the services from this assembly.
             PlumPack.Infrastructure.ServiceContext.AddServicesFromAssembly(typeof(Startup).Assembly, services);
             services.AddSingleton(provider => provider.GetRequiredService<KeyStoreFactory>().BuildValidationKeysStore());
             services.AddSingleton(provider => provider.GetRequiredService<KeyStoreFactory>().BuildSigningCredentialStore());
             
+            // Configure ASP.NET Identity.
             services.AddIdentity<User, Role>()
                 .AddDefaultTokenProviders();
-
             services.Configure<IdentityOptions>(options => { options.User.RequireUniqueEmail = true; });
             if (WebHostEnvironment.IsDevelopment())
             {
@@ -55,7 +52,6 @@ namespace PlumPack.IdentityServer.Web
                     options.User.RequireUniqueEmail = true;
                 });
             }
-            
             services.Configure<CookieAuthenticationOptions>(
                 IdentityConstants.ApplicationScheme,
                 options =>
@@ -64,6 +60,7 @@ namespace PlumPack.IdentityServer.Web
                     options.LogoutPath = "/logout";
                 });
 
+            // Configure IdentityServer.
             services.Configure<List<ClientApplication>>(Configuration.GetSection("ClientApplications"));
             services.AddIdentityServer(options =>
                 {
@@ -85,64 +82,26 @@ namespace PlumPack.IdentityServer.Web
                 .AddClientStore<ClientStore>()
                 .AddAspNetIdentity<User>();
             
-            services.AddControllersWithViews(options =>
-                {
-                    // add the "feature" convention
-                    options.Conventions.Add(new FeatureConvention());
-                    // Auto add [Area("areaName"] to controllers.
-                    options.Conventions.Add(new AutoAreaConvention());
-                })
-                .AddRazorOptions(options =>
-                {
-                    // using the "feature" convention, expand the paths
-                    options.ViewLocationExpanders.Add(new FeatureViewLocationExpander());
-                })
-                .AddFluentValidation()
-                .AddRazorRuntimeCompilation();
             services.AddAuthentication();
 
-            services.Configure<RouteOptions>(options => { options.LowercaseUrls = true; });
-            
-            // Add all of our validators
-            foreach (var validator in ValidatorDiscovery.DiscoverValidators(typeof(Startup).Assembly))
-            {
-                services.AddTransient(validator.Interface, validator.Implementation);
-            }
+            services.PlumPack(WebHostEnvironment)
+                .AddControllersWithViews()
+                .AddValidators(typeof(Startup).Assembly);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseExceptionHandler("/home/error");
-            }
-
-            if (env.IsDevelopment())
-            {
-                app.UseStaticFiles(new StaticFileOptions()
-                {
-                    OnPrepareResponse = (context) =>
-                    {
-                        // Disable caching of all static files.
-                        context.Context.Response.Headers["Cache-Control"] = "no-cache, no-store";
-                        context.Context.Response.Headers["Pragma"] = "no-cache";
-                        context.Context.Response.Headers["Expires"] = "-1";
-                    }
-                });
-            }
-            else
-            {
-                app.UseStaticFiles();
-            }
-
-            app.UseRouting();
+            app.PlumPack(WebHostEnvironment)
+                .UseExceptionPage()
+                .UseStaticFiles();
+            
             app.UseIdentityServer();
+            
             app.UseAuthorization();
+            app.UseAuthentication();
+            
+            app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapAreaControllerRoute("manage", "Manage", "manage/{controller=Home}/{action=Index}/{id?}");
