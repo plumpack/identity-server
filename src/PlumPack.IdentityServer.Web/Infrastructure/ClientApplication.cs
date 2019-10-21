@@ -10,6 +10,8 @@ namespace PlumPack.IdentityServer.Web.Infrastructure
         public string ClientId { get; set; }
             
         public string ClientName { get; set; }
+        
+        public string BaseUrl { get; set; }
             
         public string Secret { get; set; }
             
@@ -21,18 +23,6 @@ namespace PlumPack.IdentityServer.Web.Infrastructure
         
         public string FrontChannelLogoutUri { get; set; }
 
-        public static List<ClientApplication> GetClientApplications(IConfiguration configuration)
-        {
-            var clientApplications = new List<ClientApplication>();
-            var section = configuration.GetSection("ClientApplications");
-            if (!section.Exists())
-            {
-                return new List<ClientApplication>();
-            }
-            section.Bind(clientApplications);
-            return clientApplications;
-        }
-        
         public Client BuildIdentityServerClient()
         {
             return new Client
