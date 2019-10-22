@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
-using PlumPack.IdentityServer.Web.Features.Error.Models;
+using PlumPack.Web.Models;
 
 namespace PlumPack.IdentityServer.Web.Features.Error
 {
@@ -28,12 +28,12 @@ namespace PlumPack.IdentityServer.Web.Features.Error
             var message = await _interaction.GetErrorContextAsync(errorId);
             if (message != null)
             {
-                vm.Error = message;
+                vm.Error = message.Error;
 
-                if (!_environment.IsDevelopment())
+                if (_environment.IsDevelopment())
                 {
                     // only show in development
-                    message.ErrorDescription = null;
+                    message.ErrorDescription = message.ErrorDescription;
                 }
             }
 

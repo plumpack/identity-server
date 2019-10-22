@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using PlumPack.IdentityServer.Web.Areas.Manage.Features.ChangePassword.Models;
+using PlumPack.Web;
 
 namespace PlumPack.IdentityServer.Web.Areas.Manage.Features.ChangePassword
 {

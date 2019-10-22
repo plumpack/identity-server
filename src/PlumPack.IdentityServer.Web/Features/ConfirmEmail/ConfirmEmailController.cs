@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
 using PlumPack.IdentityServer.Web.Features.ConfirmEmail.Model;
 using PlumPack.Infrastructure;
+using PlumPack.Web;
 
 namespace PlumPack.IdentityServer.Web.Features.ConfirmEmail
 {

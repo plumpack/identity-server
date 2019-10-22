@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using PlumPack.IdentityServer.Web.Areas.Manage.Features.Email.Models;
 using PlumPack.Infrastructure.Email;
+using PlumPack.Web;
 
 namespace PlumPack.IdentityServer.Web.Areas.Manage.Features.Email
 {
