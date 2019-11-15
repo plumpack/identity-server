@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PlumPack.Infrastructure.Migrations;
+using SharpDataAccess.Migrations;
 
 namespace PlumPack.IdentityServer
 {

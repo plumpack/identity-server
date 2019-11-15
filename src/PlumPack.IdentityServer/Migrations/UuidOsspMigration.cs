@@ -1,19 +1,17 @@
 using System.Data;
-using PlumPack.Infrastructure.Migrations;
-using ServiceStack;
 using ServiceStack.OrmLite;
 using SharpDataAccess.Migrations;
 
 namespace PlumPack.IdentityServer.Migrations
 {
     [Migration]
-    public class CreateUsers : IMigration
+    public class UuidOsspMigration : IMigration
     {
         public void Run(IDbConnection connection)
         {
-            connection.CreateTable<User>();
+            connection.ExecuteSql("CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\";");
         }
 
-        public int Version => Versions.CreateUsers;
+        public int Version => Versions.UuidOssp;
     }
 }

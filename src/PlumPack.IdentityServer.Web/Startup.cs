@@ -17,12 +17,12 @@ namespace PlumPack.IdentityServer.Web
         public Startup(IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
         {
             Configuration = configuration;
-            WebHostEnvironment = webHostEnvironment;
+            Env = webHostEnvironment;
         }
 
         private IConfiguration Configuration { get; }
 
-        private IWebHostEnvironment WebHostEnvironment { get; }
+        private IWebHostEnvironment Env { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -38,7 +38,7 @@ namespace PlumPack.IdentityServer.Web
             services.AddIdentity<User, Role>()
                 .AddDefaultTokenProviders();
             services.Configure<IdentityOptions>(options => { options.User.RequireUniqueEmail = true; });
-            if (WebHostEnvironment.IsDevelopment())
+            if (Env.IsDevelopment())
             {
                 services.Configure<IdentityOptions>(options =>
                 {
@@ -84,7 +84,7 @@ namespace PlumPack.IdentityServer.Web
             
             services.AddAuthentication();
 
-            services.PlumPack(WebHostEnvironment)
+            services.PlumPack(Env)
                 .AddControllersWithViews()
                 .AddValidators(typeof(Startup).Assembly);
         }
@@ -92,16 +92,17 @@ namespace PlumPack.IdentityServer.Web
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.PlumPack(WebHostEnvironment)
+            app.PlumPack(Env)
                 .UseExceptionPage()
                 .UseStaticFiles();
             
             app.UseIdentityServer();
             
+            app.UseRouting();
+            
             app.UseAuthorization();
             app.UseAuthentication();
             
-            app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapAreaControllerRoute("manage", "Manage", "manage/{controller=Home}/{action=Index}/{id?}");

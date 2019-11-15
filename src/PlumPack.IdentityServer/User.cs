@@ -1,3 +1,4 @@
+using System;
 using ServiceStack.DataAnnotations;
 
 namespace PlumPack.IdentityServer
@@ -9,8 +10,8 @@ namespace PlumPack.IdentityServer
         public const string DefaultEmail = "admin@admin.com";
         public const string DefaultPassword = "Admin1234!";
         
-        [Alias("id"), PrimaryKey, Required]
-        public string Id { get; set; }
+        [Alias("id"), PrimaryKey, AutoId, Required]
+        public Guid Id { get; set; }
         
         [Alias("name")]
         public string Name { get; set; }

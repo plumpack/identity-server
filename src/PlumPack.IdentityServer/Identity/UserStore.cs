@@ -7,6 +7,7 @@ using PlumPack.Infrastructure;
 using PlumPack.Infrastructure.Data;
 using ServiceStack;
 using ServiceStack.OrmLite;
+using SharpDataAccess.Data;
 
 namespace PlumPack.IdentityServer.Identity
 {
@@ -24,7 +25,7 @@ namespace PlumPack.IdentityServer.Identity
         
         public Task<string> GetUserIdAsync(User user, CancellationToken cancellationToken)
         {
-            return Task.FromResult(user.Id);
+            return Task.FromResult(user.Id.ToString());
         }
 
         public Task<string> GetUserNameAsync(User user, CancellationToken cancellationToken)
@@ -77,7 +78,6 @@ namespace PlumPack.IdentityServer.Identity
                         });
                     }
 
-                    user.Id = Guid.NewGuid().ToString();
                     await connection.Connection.SaveAsync(user, token: cancellationToken);
                     
                     transaction.Commit();
@@ -108,7 +108,7 @@ namespace PlumPack.IdentityServer.Identity
         {
             using (var connection = new ConScope(_dataService))
             {
-                return await connection.Connection.SingleByIdAsync<User>(userId, cancellationToken);
+                return await connection.Connection.SingleByIdAsync<User>(Guid.Parse(userId), cancellationToken);
             }
         }
 

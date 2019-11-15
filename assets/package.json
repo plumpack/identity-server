@@ -1,5 +1,5 @@
 {
-  "name": "plumpack-identityserver-assets",
+  "name": "plumpack-assets",
   "version": "1.0.0",
   "scripts": {
     "build": "./node_modules/.bin/webpack",
