@@ -4,8 +4,21 @@ http:
       rule: "Host(`identity.plumpack.com`)"
       service: "my-service"
       tls: {}
+    https-redirect:
+      rule: "HostRegexp(`{any:.*}`)"
+      middlewares:
+        - https-redirect
+      service: "dummy"
+  middlewares:
+    https-redirect:
+      redirectScheme:
+        scheme: "https"
   services:
     my-service:
       loadBalancer:
         servers:
           - url: "http://localhost:5000/"
+    dummy:
+      loadBalancer:
+        servers:
+          - url: ""
