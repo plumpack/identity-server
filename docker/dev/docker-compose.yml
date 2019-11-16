@@ -1,5 +1,11 @@
 version: '2'
 services:
+  traefik:
+    image: traefik
+    network_mode: host
+    volumes:
+      - "./traefik/traefik.yml:/etc/traefik/traefik.yml"
+      - "./traefik/services.yml:/etc/traefik/services.yml"
   postgres:
     build: ./postgres/
     ports:

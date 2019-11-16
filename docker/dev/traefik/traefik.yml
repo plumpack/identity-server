@@ -1,0 +1,21 @@
+entryPoints:
+  web:
+    address: ":80"
+  websecure:
+    address: ":443"
+  other:
+    address: ":9090"
+
+providers:
+  file:
+    directory: "/etc/traefik"
+    filename: "services.yml"
+    watch: true
+
+api:
+  insecure: true
+  dashboard: true
+  debug: true
+
+log:
+  level: "DEBUG"

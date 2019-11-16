@@ -1,0 +1,11 @@
+http:
+  routers:
+    my-router:
+      rule: "Host(`identity.plumpack.com`)"
+      service: "my-service"
+      tls: {}
+  services:
+    my-service:
+      loadBalancer:
+        servers:
+          - url: "http://localhost:5000/"
